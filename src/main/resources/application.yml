@@ -1,0 +1,36 @@
+server:
+  port: 9000
+  tomcat.uri-encoding: UTF-8
+spring:
+  # 环境 dev|test|prod
+  profiles:
+    active: dev
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+      enabled: true
+  redis:
+    open: true  # 是否开启redis缓存  true开启   false关闭
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password: 123456    # 密码（默认为空javas)
+    timeout: 6000  # 连接超时时长（毫秒）ms
+    pool:
+      max-active: 500  # 连接池最大连接数（使用负值表示没有限制）
+      max-wait: -1    # 连接池最大阻塞等待时间（使用负值表示没有限制）ms
+      max-idle: 10     # 连接池中的最大空闲连接
+      min-idle: 5      # 连接池中的最小空闲连接
+  cache.type: GENERIC
+
+j2cache:
+    config-location: classpath:/j2cache-${spring.profiles.active}.properties
+    open-spring-cache: true
+    allow-null-values: true
+    cache-clean-mode: passive
+    #cache-clean-mode ->passive:被动清除，一级缓存过期进行通知各节点清除一二级缓存
+    #active:主动清除，二级缓存过期主动通知各节点清除，优点在于所有节点可以同时收到缓存清除
+    broadcast: net.oschina.j2cache.cache.support.redis.SpringRedisPubSubPolicy
+    L2.provider_class: net.oschina.j2cache.cache.support.redis.SpringRedisProvider
+    L2.config_section: redis

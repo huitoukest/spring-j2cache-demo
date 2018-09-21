@@ -1,0 +1,54 @@
+<!-- for ehcache 3.x -->
+<config
+        xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+        xmlns='http://www.ehcache.org/v3'
+        xsi:schemaLocation="http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core.xsd">
+
+    <!--ehcache的持久化操作保存地址-->
+    <!--<disk-store thread-pool=""></disk-store> 这个不能使用，用了只会报错 -->
+    <!--<persistence directory="F:/Test2/ehcache-parent/ehcache-demo2/myData"/>-->
+    <persistence directory="/home/tmp/spring_cache"/>
+
+    <!-- Don't remote default cache configuration -->
+    <cache-template name="default">
+        <key-type>java.lang.String</key-type>
+        <value-type>java.io.Serializable</value-type>
+        <expiry>
+            <ttl unit="seconds">600</ttl>
+        </expiry>
+        <resources>
+            <heap>1000</heap>
+            <offheap unit="MB">20</offheap>
+            <disk unit="MB" persistent="true"> 100</disk>
+        </resources>
+    </cache-template>
+
+    <!-- 配置一个默认的缓存 -->
+    <cache alias="default" uses-template="default"/>
+
+    <!-- <value-type>java.lang.String</value-type> --> <!--缓存条目类型-->
+    <cache alias="userCache" uses-template="default">
+        <expiry>
+            <ttl unit="seconds">600</ttl>
+        </expiry>
+        <resources>
+            <heap>5000</heap>
+            <offheap unit="MB">20</offheap>
+            <disk unit="MB" persistent="true"> 100 </disk>
+        </resources>
+    </cache>
+
+
+    <!-- <value-type>java.lang.String</value-type> --> <!--缓存条目类型-->
+    <cache alias="testCache" uses-template="default">
+        <expiry>
+            <ttl unit="seconds">60</ttl>
+        </expiry>
+        <resources>
+            <heap>5000</heap>
+            <offheap unit="MB">20</offheap>
+            <disk unit="MB" persistent="true"> 50 </disk>
+        </resources>
+    </cache>
+    
+</config>
